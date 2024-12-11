@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuju Talk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        h1 {
+            color: #365ff6;
+            margin-top: 20px;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        .message-box {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #c4ebea;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .send-button {
+            background-color: #365ff6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+        }
+        .send-button:hover {
+            background-color: #365ff6;
+        }
+        .messages {
+            margin-top: 30px;
+            text-align: left;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+        .message .message-bubble {
+            background-color: #a0f1f7;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 20px;
+            max-width: 70%;
+            box-shadow: 0 1px 3px rgba(11, 3, 3, 0.1);
+            font-size: 14px;
+            word-wrap: break-word;
+            margin-right: 10px;
+        }
+        .message .message-header {
+            font-weight: bold;
+            color: #272480;
+            margin-bottom: 5px;
+        }
+        .message .message-time {
+            font-size: 12px;
+            color: #010101;
+            margin-top: 5px;
+        }
+        .message.sent .message-bubble {
+            background-color: #a0f1f7;
+            color: rgb(10, 7, 7);
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        .message.received .message-bubble {
+            background-color: #e7f4e7;
+            color: #000000;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tuju Talk</h1>
+
+    <div class="container">
+        <!-- Form untuk Nama Pengguna -->
+        <input type="text" id="usernameInput" placeholder="Nama Kamu Siapa?" style="width: 100%; padding: 10px; font-size: 16px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc;" />
+        
+        <!-- Bagian untuk Mengirim Pesan -->
+        <h2>Mengirim Pesan</h2>
+        <textarea class="message-box" id="messageInput" placeholder="Apa yang kamu pikirin?"></textarea>
+        <button class="send-button" onclick="sendMessage()">Kirim Pesan</button>
+    </div>
+
+    <!-- Menampilkan Pesan yang sudah disimpan -->
+    <div class="messages" id="messagesContainer">
+        <h2>Pesan Terkirim:</h2>
+        <!-- Pesan akan ditampilkan di sini -->
+    </div>
+
+    <script>
+        // Fungsi untuk mengirim dan menyimpan pesan beserta tanggal dan nama pengguna
+        function sendMessage() {
+            const usernameInput = document.getElementById("usernameInput");
+            const messageInput = document.getElementById("messageInput");
+            const username = usernameInput.value.trim();
+            const messageText = messageInput.value.trim();
+
+            // Validasi untuk memastikan nama pengguna dan pesan tidak kosong
+            if (username === "") {
+                alert("Nama pengguna tidak boleh kosong!");
+                return;
+            }
+            if (messageText === "") {
+                alert("Pesan tidak boleh kosong!");
+                return;
+            }
+
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleString(); // Format tanggal dan waktu
+
+            // Membuat elemen untuk menampilkan pesan yang terkirim
+            const messageContainer = document.createElement("div");
+            messageContainer.classList.add("message", "sent");
+
+            // Menampilkan nama pengguna, pesan, dan tanggal
+            messageContainer.innerHTML = `
+                <div class="message-bubble">
+                    <div class="message-header">${username}</div>
+                    <div class="message-content">${messageText}</div>
+                    <div class="message-time"><em>Waktu Terkirim: ${formattedDate}</em></div>
+                </div>
+            `;
+
+            // Menambahkan pesan ke dalam container
+            const messagesContainer = document.getElementById("messagesContainer");
+            messagesContainer.appendChild(messageContainer);
+
+            // Mengosongkan kolom input setelah pesan terkirim
+            usernameInput.value = "";
+            messageInput.value = "";
+
+            // Scroll ke bawah untuk pesan terbaru
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
